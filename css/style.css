@@ -1,0 +1,60 @@
+body{
+    text-align:center;
+    font-family:'Times New Roman', Times, serif;
+}
+
+img{
+    background-color:#f2f2f2;
+    height:4rem;
+    width:4rem;
+}
+
+li{
+    list-style:none;
+}
+
+.special{
+    transform:scale(1.2);
+    font-weight:bold;
+}
+
+#switcher ul li{
+    margin:16px;
+    margin-top:1.3rem;
+}
+
+#switcher ul{
+    display: flex;
+    margin:10px auto;
+    height:10rem;
+    width:52vw;
+    border:2px solid skyblue;
+    border-radius:10px;
+    background-color:#f2f2f2;
+}
+
+#display .name{
+    font-size:21px;
+    font-family:verdana;
+    font-weight:bold;
+}
+
+#display{
+    margin:2rem auto;
+    background-color: #f2f2f2;
+    font-size:20px;
+    border-radius:10px;
+    text-align: center;
+    padding:5px;
+    width:27rem;
+}
+
+#display p{
+    margin:6px;
+}
+
+#display img{
+    margin:10px 0;
+    width:8rem;
+    height:8rem;
+}
