@@ -13,3 +13,7 @@
 ```
 JavaScript,CSS,HTML
 ```
+
+## Controls :
+
+>ctrl + t
