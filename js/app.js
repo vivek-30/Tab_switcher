@@ -1,66 +1,62 @@
-    var switcher=document.getElementById('switcher');
-    var display=document.getElementById('display');
-    var ul=document.getElementById('list');
+var switcher = document.getElementById('switcher'),
+    display = document.getElementById('display'),
+    ListContainer = document.getElementById('list-container'),
+    dataList = document.querySelectorAll('#list-container li');
 
-    switcher.hidden=true;
-    is_tabbing=false;
-    var temp=null;
-    var li=document.querySelectorAll('#list li');
-    var pos=0;
+switcher.hidden = true;
+isTabbing = false;
+var temp = null;
+var currPos = 0;
 
-    setup();
+// Initial Setup for the App.
+setup();
 
-    document.addEventListener('keydown',(e)=>{
+document.addEventListener('keydown', (e) => {
 
-        if(e.key=='Control'){
-            is_tabbing=true;
-            switcher.hidden=false;
-            temp=head;
-        }
-        
-        if(e.key=='t' && is_tabbing){
+    if (e.key == 'Control') {
+        isTabbing = true;
+        switcher.hidden = false;
+        temp = head;
+    }
 
-            if(!temp)
-            return;
+    if ((e.key === 'f' || e.key === 'b') && isTabbing && temp) {
+        let key = e.key;
+        dataList[currPos].className = "normal";
+        temp = key === 'f' ? temp.next : temp.prev;
+        currPos = key === 'f' ? ((currPos + 1) % totalElements) : currPos ? ((currPos - 1) % totalElements) : (totalElements - 1);
+        dataList[currPos].classList.add('special');
+    }
+});
 
-            li[pos].className="normal";
-            temp=temp.next;
-            pos=(pos+1)%total_elements;
-            li[pos].classList.add('special');
-        }
+document.addEventListener('keyup', function (e) {
+    if (e.key == 'Control') {
+        isTabbing = false;
+        moveToForward(temp);
+        switcher.hidden = true;
+        setup();
+    }
+});
 
-    });
-    
-    document.addEventListener('keyup',function(e){
-        if(e.key=='Control'){
-            is_tabbing=false;
-            moveToForward(temp);
-            switcher.hidden=true;
-            setup();
-        }
-    });
+function setup() {
 
-    function setup(){
-
-        display.innerHTML=`<img id="dp" src="${head.data.src}" alt="application">
+    display.innerHTML = `<img id="dp" src="${head.data.src}" alt="application">
         <p class="name">${head.data.name}</p>
         <p id="description">${head.data.description}</p>`
-        
-        ul.innerHTML='';
-        temp=head;
 
-        do
-        {
-            ul.innerHTML+=`
+    ListContainer.innerHTML = '';
+    temp = head;
+
+    do {
+        ListContainer.innerHTML += `
             <li>
             <img src="${temp.data.src}" class="normal" alt="${temp.data.name}-app">
             <p class="name">${temp.data.name}</p>
             </li>
             `
-            temp=temp.next;
-        }while(temp!=head);
-            
-        li=document.querySelectorAll('#switcher ul li');
-        pos=0;
-        li[pos].classList.add('special');
-    }
+        temp = temp.next;
+    } while (temp != head);
+
+    dataList = document.querySelectorAll('#list-container li');
+    currPos = 0;
+    dataList[currPos].classList.add('special');
+}
