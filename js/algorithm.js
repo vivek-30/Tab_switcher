@@ -2,53 +2,67 @@ class Node {
     constructor(data) {
         this.data = data;
         this.next = this;
+        this.prev = this;
     }
 }
 
 var head = null;
 var tail = null;
-var total_elements = 0;
+var totalElements = 0;
 
 const createList = (data) => {
 
     var newNode = new Node(data);
-    total_elements++;
+    totalElements++;
 
     if (!head) {
-        head = newNode;
-        tail = head;
+        head = tail = newNode;
         return;
     }
 
     tail.next = newNode;
+    newNode.prev = tail;
     tail = newNode;
     tail.next = head;
+    head.prev = tail;
 }
 
-function moveToForward(node) {
+const moveToForward = (node) => {
     if (head == null || head == node)
         return;
+
     let temp = head;
+    let isTailNode = false;
+
     while (temp.next != node) {
         temp = temp.next;
     }
 
-    let is_true = false;
-
     if (temp.next == tail)
-        is_true = true;
+        isTailNode = true;
 
-    temp.next = temp.next.next;
-    node.next = head;
-    head = node;
-    if (is_true)
-        tail = temp;
-    tail.next = node;
+    if(!isTailNode){
+        temp.next = node.next;
+        node.next.prev = temp;
+        node.next = head;
+        head.prev = node;
+        head = node;
+        tail.next = head;
+        head.prev = tail;
+    }
+    else{
+        tail = tail.prev;
+        node.next = head;
+        head.prev = node;
+        node.prev = tail;
+        head = node;
+        tail.next = head;
+    }
 }
 
-function print(head) {
+const print = (head) => {
     if (head === null) {
-        console.log('empty list');
+        console.log('List is Empty');
         return;
     }
 
@@ -60,11 +74,11 @@ function print(head) {
 }
 
 // this is still a incomplete function
-function remove(node) {
+const remove = (node) => {
     if (!head)
         return;
 
-    total_elements--;
+    totalElements--;
 
     if (node.next == node) {
         head = null;
@@ -83,9 +97,9 @@ function remove(node) {
             temp = temp.next;
         }
 
-        let is_tail = false;
-        if (temp = tail) {
-            is_tail = true;
+        let isTailNode = false;
+        if (temp == tail) {
+            isTailNode = true;
         }
 
         temp.next = node.next;
@@ -93,7 +107,7 @@ function remove(node) {
     }
 }
 
-const data = [
+const Data = [
     {
         name: 'Finder',
         description: 'Finder is where you start exploring your macbook stuff',
@@ -131,7 +145,6 @@ const data = [
     }
 ];
 
-data.forEach(item => {
+Data.forEach(item => {
     createList(item);
 });
-
