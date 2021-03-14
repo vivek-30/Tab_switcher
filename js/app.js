@@ -3,7 +3,7 @@ var switcher = document.getElementById('switcher'),
     ul = document.getElementById('list');
 
 switcher.hidden = true;
-is_tabbing = false;
+isTabbing = false;
 var temp = null;
 var li = document.querySelectorAll('#list li');
 var pos = 0;
@@ -13,27 +13,28 @@ setup();
 document.addEventListener('keydown', (e) => {
 
     if (e.key == 'Control') {
-        is_tabbing = true;
+        isTabbing = true;
         switcher.hidden = false;
         temp = head;
     }
 
-    if (e.key == 't' && is_tabbing) {
-
-        if (!temp)
-            return;
-
+    if (e.key == 'f' && isTabbing && temp) {
         li[pos].className = "normal";
         temp = temp.next;
-        pos = (pos + 1) % total_elements;
+        pos = (pos + 1) % totalElements;
         li[pos].classList.add('special');
     }
-
+    else if(e.key == 'b' && isTabbing && temp) {
+        li[pos].className = "normal";
+        temp = temp.prev;
+        pos = pos ? (pos -1) % totalElements : totalElements - 1;
+        li[pos].classList.add('special');
+    }
 });
 
 document.addEventListener('keyup', function (e) {
     if (e.key == 'Control') {
-        is_tabbing = false;
+        isTabbing = false;
         moveToForward(temp);
         switcher.hidden = true;
         setup();
