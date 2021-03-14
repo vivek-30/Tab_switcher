@@ -44,20 +44,16 @@ const moveToForward = (node) => {
     if(!isTailNode){
         temp.next = node.next;
         node.next.prev = temp;
-        node.next = head;
-        head.prev = node;
-        head = node;
-        tail.next = head;
-        head.prev = tail;
     }
     else{
         tail = tail.prev;
-        node.next = head;
-        head.prev = node;
-        node.prev = tail;
-        head = node;
-        tail.next = head;
     }
+
+    node.next = head;
+    head.prev = node;
+    head = node;
+    tail.next = head;
+    head.prev = tail;
 }
 
 const print = (head) => {

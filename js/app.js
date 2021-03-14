@@ -1,13 +1,14 @@
 var switcher = document.getElementById('switcher'),
     display = document.getElementById('display'),
-    ul = document.getElementById('list');
+    ListContainer = document.getElementById('list-container'),
+    dataList = document.querySelectorAll('#list-container li');
 
 switcher.hidden = true;
 isTabbing = false;
 var temp = null;
-var li = document.querySelectorAll('#list li');
-var pos = 0;
+var currPos = 0;
 
+// Initial Setup for the App.
 setup();
 
 document.addEventListener('keydown', (e) => {
@@ -18,17 +19,12 @@ document.addEventListener('keydown', (e) => {
         temp = head;
     }
 
-    if (e.key == 'f' && isTabbing && temp) {
-        li[pos].className = "normal";
-        temp = temp.next;
-        pos = (pos + 1) % totalElements;
-        li[pos].classList.add('special');
-    }
-    else if(e.key == 'b' && isTabbing && temp) {
-        li[pos].className = "normal";
-        temp = temp.prev;
-        pos = pos ? (pos -1) % totalElements : totalElements - 1;
-        li[pos].classList.add('special');
+    if ((e.key === 'f' || e.key === 'b') && isTabbing && temp) {
+        let key = e.key;
+        dataList[currPos].className = "normal";
+        temp = key === 'f' ? temp.next : temp.prev;
+        currPos = key === 'f' ? ((currPos + 1) % totalElements) : currPos ? ((currPos - 1) % totalElements) : (totalElements - 1);
+        dataList[currPos].classList.add('special');
     }
 });
 
@@ -47,11 +43,11 @@ function setup() {
         <p class="name">${head.data.name}</p>
         <p id="description">${head.data.description}</p>`
 
-    ul.innerHTML = '';
+    ListContainer.innerHTML = '';
     temp = head;
 
     do {
-        ul.innerHTML += `
+        ListContainer.innerHTML += `
             <li>
             <img src="${temp.data.src}" class="normal" alt="${temp.data.name}-app">
             <p class="name">${temp.data.name}</p>
@@ -60,7 +56,7 @@ function setup() {
         temp = temp.next;
     } while (temp != head);
 
-    li = document.querySelectorAll('#switcher ul li');
-    pos = 0;
-    li[pos].classList.add('special');
+    dataList = document.querySelectorAll('#list-container li');
+    currPos = 0;
+    dataList[currPos].classList.add('special');
 }
